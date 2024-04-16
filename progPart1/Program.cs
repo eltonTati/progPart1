@@ -10,10 +10,12 @@ namespace progPart1
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter the number of ingredients:");
+            // Prompt the user to enter the number of ingredients
+            Console.WriteLine("Please enter the number of ingredients:");
             int ingredientCount = int.Parse(Console.ReadLine());
-            
-            Console.WriteLine("Enter the number of Steps:");
+
+            // Prompt the user to enter the number of steps
+            Console.WriteLine("Please enter the number of Steps:");
             int stepCount = int.Parse(Console.ReadLine());
 
             Recipe recipe = new Recipe(ingredientCount, stepCount);
