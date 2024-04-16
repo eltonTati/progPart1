@@ -48,7 +48,7 @@ namespace progPart1
             // Loop through each step to get its description
             for (int i = 0; i < stepCount; i++)
             {
-                Console.WriteLine($"Enter step {i + 1} description:");
+                Console.WriteLine($"Enter the step {i + 1} description:");
                 recipe.Steps[i] = Console.ReadLine();
             }
             // Display the ingredients and steps of the recipe

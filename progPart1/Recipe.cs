@@ -13,6 +13,7 @@ namespace progPart1
         public string[] Steps { get; set; } // Array to store steps
         private double[] FirstQuant { get; set; } // Array to store original quantities of ingredients
 
+        
         // Constructor to initialize the arrays based on the number of ingredients and steps
         public Recipe(int ingredientCount, int stepCount)
         {
@@ -37,7 +38,7 @@ namespace progPart1
             }
         }
 
-        //  I created this method to Scale the quantities of ingredients by a given factor
+        // Scale the quantities of ingredients by a given factor
         public void Scale(double factor)
         {
             for (int i = 0; i < Ingredients.Length; i++)
