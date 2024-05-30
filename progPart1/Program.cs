@@ -6,40 +6,50 @@ namespace progPart1
     {
         static void Main(string[] args)
         {
-            try
+            while (true)
             {
-                int ingredientCount = GetPositiveInteger("Please enter the number of ingredients:");
-                int stepCount = GetPositiveInteger("Please enter the number of steps:");
-
-                // Create a new Recipe instance with the specified number of ingredients and steps
-                Recipe recipe = new Recipe(ingredientCount, stepCount);
-
-                GetIngredients(recipe, ingredientCount);
-                recipe.ReservedQuantities();
-                GetSteps(recipe, stepCount);
-
-                // Display the ingredients and steps of the recipe
-                DisplayRecipe(recipe);
-
-                while (true)
+                try
                 {
-                    ScaleRecipe(recipe);
+                    int ingredientCount = GetPositiveInteger("Please enter the number of ingredients:");
+                    int stepCount = GetPositiveInteger("Please enter the number of steps:");
 
-                    Console.WriteLine("\nDo you want to scale the recipe again? (y/n)");
-                    if (Console.ReadLine().ToLower() != "y")
+                    // Create a new Recipe instance with the specified number of ingredients and steps
+                    Recipe recipe = new Recipe(ingredientCount, stepCount);
+
+                    GetIngredients(recipe, ingredientCount);
+                    recipe.ReservedQuantities();
+                    GetSteps(recipe, stepCount);
+
+                    // Display the ingredients and steps of the recipe
+                    DisplayRecipe(recipe);
+
+                    while (true)
                     {
-                        break;
-                    }
-                }
+                        ScaleRecipe(recipe);
 
-                ResetQuantitiesIfRequested(recipe);
-                ClearRecipeIfRequested(recipe);
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                Console.ResetColor();
+                        Console.WriteLine("\nDo you want to scale the recipe again? (y/n)");
+                        if (Console.ReadLine().ToLower() != "y")
+                        {
+                            break;
+                        }
+                    }
+
+                    ResetQuantitiesIfRequested(recipe);
+
+                    if (ClearRecipeIfRequested(recipe))
+                    {
+                        // If the user confirmed clearing the recipe, loop to enter new data
+                        continue;
+                    }
+
+                    break; // Exit the loop if no clearing is requested
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                    Console.ResetColor();
+                }
             }
         }
 
@@ -129,13 +139,20 @@ namespace progPart1
             }
         }
 
-        static void ClearRecipeIfRequested(Recipe recipe)
+        static bool ClearRecipeIfRequested(Recipe recipe)
         {
             Console.WriteLine("\nDo you want to clear all data to enter a new recipe? (y/n)");
             if (Console.ReadLine().ToLower() == "y")
             {
-                recipe.Clear();
+                Console.WriteLine("\nAre you sure you want to clear all data? This cannot be undone. (y/n)");
+                if (Console.ReadLine().ToLower() == "y")
+                {
+                    recipe.Clear();
+                    Console.WriteLine("Data cleared. You can now enter a new recipe.");
+                    return true;
+                }
             }
+            return false;
         }
 
         static void DisplayRecipe(Recipe recipe)
