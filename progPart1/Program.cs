@@ -15,12 +15,23 @@ namespace progPart1
                 Recipe recipe = new Recipe(ingredientCount, stepCount);
 
                 GetIngredients(recipe, ingredientCount);
+                recipe.ReservedQuantities();
                 GetSteps(recipe, stepCount);
 
                 // Display the ingredients and steps of the recipe
                 DisplayRecipe(recipe);
 
-                ScaleRecipe(recipe);
+                while (true)
+                {
+                    ScaleRecipe(recipe);
+
+                    Console.WriteLine("\nDo you want to scale the recipe again? (y/n)");
+                    if (Console.ReadLine().ToLower() != "y")
+                    {
+                        break;
+                    }
+                }
+
                 ResetQuantitiesIfRequested(recipe);
                 ClearRecipeIfRequested(recipe);
             }
