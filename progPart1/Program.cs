@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// Elton Tati
+/// ST10158190
+/// PROGRAMMING PART 2
+/// </summary>
 namespace progPart2
+
 {
     public class Program
     {
@@ -20,6 +26,8 @@ namespace progPart2
                     int stepCount = GetPositiveInteger("Please enter the number of steps:");
 
                     Recipe recipe = new Recipe(recipeName, ingredientCount, stepCount);
+
+                    //Total calorires warning 
                     recipe.CaloriesExceeded += (name, totalCalories) =>
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -33,7 +41,7 @@ namespace progPart2
 
                     recipes.Add(recipe);
 
-                    // Display the ingredients and steps of the recipe
+                    // Display the details of the recipe 
                     recipe.DisplayRecipe();
 
                     while (true)
@@ -49,9 +57,9 @@ namespace progPart2
 
                     recipe.ResetQuantitiesIfRequested();
 
-                    if (recipe.ClearRecipeIfRequested())
+                    if (recipe.AddNewRecipe())
                     {
-                        // If the user confirmed clearing the recipe, break the loop to enter a new recipe
+                        // break the loop to enter a new recipe
                         break;
                     }
                 }
@@ -95,12 +103,14 @@ namespace progPart2
                 }
             }
         }
+        //This method is to ask the recipe name 
         static string GetRecipeName()
         {
             Console.WriteLine("Please enter the recipe name:");
             return Console.ReadLine();
         }
 
+        //This method ensures that the user enters a positive integer 
         static int GetPositiveInteger(string prompt)
         {
             int value;
@@ -118,6 +128,7 @@ namespace progPart2
             return value;
         }
 
+        //This method allows the user to select a recipe number 
         static int GetSelectedRecipeNumber(int maxNumber)
         {
             int value;
@@ -135,4 +146,4 @@ namespace progPart2
         }
     }
 }
-   
+

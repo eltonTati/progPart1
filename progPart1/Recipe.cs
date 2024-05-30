@@ -4,6 +4,9 @@ using System;
 
 namespace progPart2
 {
+    /// <summary>
+    /// This is the recipe class where i have all the methods that ensures the app functionalities or features required for this POE Part 2 
+    /// </summary>
     public class Recipe
     {
         public string Name { get; set; }
@@ -12,7 +15,7 @@ namespace progPart2
         private List<double> OriginalQuantities { get; set; }
         private List<string> OriginalUnits { get; set; }
 
-        //private delegate void ScaleDelegate(double factor);
+
         private delegate void ResetDelegate();
         public delegate void ScaleDelegate(double factor);
 
@@ -29,6 +32,8 @@ namespace progPart2
             OriginalUnits = new List<string>(ingredientCount);
             Steps = new List<string>(stepCount);
         }
+
+        //This is the method to get the ingredientes details 
         public void GetIngredients(int ingredientCount)
         {
             for (int i = 0; i < ingredientCount; i++)
@@ -50,6 +55,7 @@ namespace progPart2
                 Ingredients.Add(new Ingredient { Name = name, Quantity = quantity, Unit = unit, Calories = calories, FoodGroup = foodGroup });
             }
         }
+        //this method ensures that the user enters a positive value 
         public double GetPositiveDouble(string prompt)
         {
             double value;
@@ -66,7 +72,7 @@ namespace progPart2
             }
             return value;
         }
-
+        //This is to get each steps description 
         public void GetSteps(int stepCount)
         {
             for (int i = 0; i < stepCount; i++)
@@ -75,6 +81,7 @@ namespace progPart2
                 Steps.Add(Console.ReadLine());
             }
         }
+        //this method asks the user to enter the scale and ensures that it is valid input
         public void ScaleRecipe()
         {
             double factor = 0;
@@ -99,7 +106,7 @@ namespace progPart2
                 Console.ResetColor();
             }
         }
-
+        //this method asks if the user wants to reset quantities 
         public void ResetQuantitiesIfRequested()
         {
             ResetDelegate reset = delegate ()
@@ -115,12 +122,13 @@ namespace progPart2
             if (Console.ReadLine().ToLower() == "y")
             {
                 reset();
+                //display the recipe after reseting to original values 
                 DisplayRecipe();
             }
         }
 
-
-        public bool ClearRecipeIfRequested()
+        //this is the method to enter a new recipe 
+        public bool AddNewRecipe()
         {
             Console.WriteLine("\nDo you want to enter a new recipe? (y/n)");
             if (Console.ReadLine().ToLower() == "n")
@@ -132,7 +140,7 @@ namespace progPart2
             return false;
         }
 
-
+        //this is the method to display every detail 
         public void DisplayRecipe()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -156,7 +164,7 @@ namespace progPart2
             Console.WriteLine($"\nTotal Calories: {totalCalories}");
             Console.ResetColor();
 
-            // Trigger the event if total calories exceed 300
+            // this part triggers the event if total calories exceed 300
             if (totalCalories > 300)
             {
                 CaloriesExceeded?.Invoke(Name, totalCalories);
@@ -172,6 +180,7 @@ namespace progPart2
             }
         }
 
+        // mehtod to store original quantities 
         public void StoreOriginalQuantities()
         {
             for (int i = 0; i < Ingredients.Count; i++)
