@@ -7,24 +7,26 @@ namespace RecipeTest
     [TestClass]
     public class UnitTest1
     {
+        /// <summary>
+        /// Unit test for testing calories calculation
+        /// </summary>
         [TestMethod]
         public void CaloriesCalculationTest()
         {
-
-            var recipe = new Recipe("Test Recipe", 3, 3);
-
-
-
-            recipe.GetIngredients(3); //  3 ingredients with known calorie values
-            recipe.Ingredients[0].Calories = 100; // Ingredient 1 with 100 calories
-            recipe.Ingredients[1].Calories = 200; // Ingredient 2 with 200 calories
-            recipe.Ingredients[2].Calories = 100;  // Ingredient 3 with 100 calories
+            // Arrange
+            var recipe = new Recipe("Test Recipe", 3,1);
+            recipe.Ingredients = new List<Ingredient>
+            {
+                new Ingredient { Name = "Ingredient1", Quantity = 1, Unit = "Unit1", Calories = 100, FoodGroup = "Group1" },
+                new Ingredient { Name = "Ingredient2", Quantity = 1, Unit = "Unit2", Calories = 200, FoodGroup = "Group2" },
+                new Ingredient { Name = "Ingredient3", Quantity = 1, Unit = "Unit3", Calories = 100, FoodGroup = "Group3" }
+            };
 
             // Act
             double totalCalories = CalculateTotalCalories(recipe.Ingredients);
 
             // Assert
-            Assert.AreEqual(400, totalCalories); // Total calories should be 4000 (100 + 200 + 100)
+            Assert.AreEqual(400, totalCalories);
         }
 
         private double CalculateTotalCalories(List<Ingredient> ingredients)

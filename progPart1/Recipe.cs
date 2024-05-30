@@ -10,10 +10,13 @@ namespace progPart2
     public class Recipe
     {
         public string Name { get; set; }
+        public int IngredientCount { get; set; }
+        public int StepCount { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         private List<string> Steps { get; set; }
         private List<double> OriginalQuantities { get; set; }
         private List<string> OriginalUnits { get; set; }
+
 
 
         private delegate void ResetDelegate();
@@ -27,13 +30,17 @@ namespace progPart2
         public Recipe(string name, int ingredientCount, int stepCount)
         {
             Name = name;
+            IngredientCount = ingredientCount;
+            StepCount = stepCount;
             Ingredients = new List<Ingredient>(ingredientCount);
             OriginalQuantities = new List<double>(ingredientCount);
             OriginalUnits = new List<string>(ingredientCount);
             Steps = new List<string>(stepCount);
         }
+        /// <summary>
+        /// This is the method to get the ingredientes details 
+        /// </summary>
 
-        //This is the method to get the ingredientes details 
         public void GetIngredients(int ingredientCount)
         {
             for (int i = 0; i < ingredientCount; i++)
@@ -55,7 +62,10 @@ namespace progPart2
                 Ingredients.Add(new Ingredient { Name = name, Quantity = quantity, Unit = unit, Calories = calories, FoodGroup = foodGroup });
             }
         }
-        //this method ensures that the user enters a positive value 
+        /// <summary>
+        /// This method ensures that the user enters a positive value 
+        /// </summary>
+       
         public double GetPositiveDouble(string prompt)
         {
             double value;
@@ -106,7 +116,10 @@ namespace progPart2
                 Console.ResetColor();
             }
         }
-        //this method asks if the user wants to reset quantities 
+        /// <summary>
+        ///this method asks if the user wants to reset quantities 
+        /// </summary>
+       
         public void ResetQuantitiesIfRequested()
         {
             ResetDelegate reset = delegate ()

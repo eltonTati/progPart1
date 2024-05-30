@@ -70,7 +70,11 @@ namespace progPart2
                     Console.ResetColor();
                 }
             }
-            // Display all recipes entered by the user in alphabetical order by name
+
+            /// <summary>
+            ///  Display all recipes entered by the user in alphabetical order by name
+            /// </summary>
+
             Console.WriteLine("\nRecipes entered (sorted by name):");
             int recipeNumber = 1;
             foreach (var recipe in recipes.OrderBy(r => r.Name))
@@ -103,7 +107,10 @@ namespace progPart2
                 }
             }
         }
-        //This method is to ask the recipe name 
+        /// <summary>
+        /// This method is to ask the recipe name 
+        /// </summary>
+        
         static string GetRecipeName()
         {
             Console.WriteLine("Please enter the recipe name:");
