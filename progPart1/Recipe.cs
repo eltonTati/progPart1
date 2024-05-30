@@ -12,13 +12,14 @@ namespace progPart1
         public Ingredient[] Ingredients { get; set; } // Array to store ingredients
         public string[] Steps { get; set; } // Array to store steps
         private double[] FirstQuant { get; set; } // Array to store original quantities of ingredients
+        private string[] FirstUnits { get; set; }
 
-        
         // Constructor to initialize the arrays based on the number of ingredients and steps
         public Recipe(int ingredientCount, int stepCount)
         {
             Ingredients = new Ingredient[ingredientCount];
             FirstQuant = new double[ingredientCount];
+            FirstUnits = new string[ingredientCount];
             Steps = new string[stepCount];
         }
 
@@ -53,6 +54,7 @@ namespace progPart1
             for (int i = 0; i < Ingredients.Length; i++)
             {
                 Ingredients[i].Quantity = FirstQuant[i];
+                Ingredients[i].Unit = FirstUnits[i];
             }
         }
 
@@ -70,6 +72,7 @@ namespace progPart1
             for (int i = 0; i < Ingredients.Length; i++)
             {
                 FirstQuant[i] = Ingredients[i].Quantity;
+                FirstUnits[i] = Ingredients[i].Unit;
             }
         }
     }
