@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace progPart1
+namespace progPart2
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -20,6 +20,12 @@ namespace progPart1
                     int stepCount = GetPositiveInteger("Please enter the number of steps:");
 
                     Recipe recipe = new Recipe(recipeName, ingredientCount, stepCount);
+                    recipe.CaloriesExceeded += (name, totalCalories) =>
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"WARNING: The total calories of recipe '{name}' exceed 300. Total Calories: {totalCalories}");
+                        Console.ResetColor();
+                    };
 
                     recipe.GetIngredients(ingredientCount);
                     recipe.StoreOriginalQuantities();
