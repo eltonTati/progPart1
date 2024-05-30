@@ -1,79 +1,153 @@
-﻿using System;
+﻿using progPart1;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
-namespace progPart1
+internal class Recipe
 {
-    internal class Recipe
+    public string Name { get; set; }
+    private List<Ingredient> Ingredients { get; set; }
+    private List<string> Steps { get; set; }
+    private List<double> OriginalQuantities { get; set; }
+    private List<string> OriginalUnits { get; set; }
+
+    //private delegate void ScaleDelegate(double factor);
+    private delegate void ResetDelegate();
+    public delegate void ScaleDelegate(double factor);
+    public Recipe(string name, int ingredientCount, int stepCount)
     {
-
-        public Ingredient[] Ingredients { get; set; } // Array to store ingredients
-        public string[] Steps { get; set; } // Array to store steps
-        private double[] FirstQuant { get; set; } // Array to store original quantities of ingredients
-        private string[] FirstUnits { get; set; }
-
-        // Constructor to initialize the arrays based on the number of ingredients and steps
-        public Recipe(int ingredientCount, int stepCount)
+        Name = name;
+        Ingredients = new List<Ingredient>(ingredientCount);
+        OriginalQuantities = new List<double>(ingredientCount);
+        OriginalUnits = new List<string>(ingredientCount);
+        Steps = new List<string>(stepCount);
+    }
+    public void GetIngredients(int ingredientCount)
+    {
+        for (int i = 0; i < ingredientCount; i++)
         {
-            Ingredients = new Ingredient[ingredientCount];
-            FirstQuant = new double[ingredientCount];
-            FirstUnits = new string[ingredientCount];
-            Steps = new string[stepCount];
+            Console.WriteLine("Enter ingredient name:");
+            string name = Console.ReadLine();
+
+            double quantity = GetPositiveDouble("Enter quantity:");
+
+            Console.WriteLine("Enter unit of measurement:");
+            string unit = Console.ReadLine();
+
+            Ingredients.Add(new Ingredient { Name = name, Quantity = quantity, Unit = unit });
+        }
+    }
+
+    public double GetPositiveDouble(string prompt)
+    {
+        double value;
+        while (true)
+        {
+            Console.WriteLine(prompt);
+            if (double.TryParse(Console.ReadLine(), out value) && value > 0)
+            {
+                break;
+            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid input. Please enter a positive number.");
+            Console.ResetColor();
+        }
+        return value;
+    }
+
+    public void GetSteps(int stepCount)
+    {
+        for (int i = 0; i < stepCount; i++)
+        {
+            Console.WriteLine($"Enter the step {i + 1} description:");
+            Steps.Add(Console.ReadLine());
+        }
+    }
+    public void ScaleRecipe()
+    {
+        double factor = 0;
+        ScaleDelegate scale = delegate (double f)
+        {
+            for (int i = 0; i < Ingredients.Count; i++)
+            {
+                Ingredients[i].Quantity *= f;
+            }
+        };
+
+        Console.WriteLine("\nEnter scaling factor (0.5, 2, or 3):");
+        if (double.TryParse(Console.ReadLine(), out factor) && (factor == 0.5 || factor == 2 || factor == 3))
+        {
+            scale(factor);
+            DisplayRecipe();
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid input. Please enter 0.5, 2, or 3 for the scaling factor.");
+            Console.ResetColor();
+        }
+    }
+
+    public void ResetQuantitiesIfRequested()
+    {
+        ResetDelegate reset = delegate ()
+        {
+            for (int i = 0; i < Ingredients.Count; i++)
+            {
+                Ingredients[i].Quantity = OriginalQuantities[i];
+                Ingredients[i].Unit = OriginalUnits[i];
+            }
+        };
+
+        Console.WriteLine("\nDo you want to reset quantities to original values? (y/n)");
+        if (Console.ReadLine().ToLower() == "y")
+        {
+            reset();
+            DisplayRecipe();
+        }
+    }
+
+    
+    public bool ClearRecipeIfRequested()
+    {
+        Console.WriteLine("\nDo you want to enter a new recipe? (y/n)");
+        if (Console.ReadLine().ToLower() == "n")
+        {             
+                return true;
+            
+        }
+        Console.WriteLine("You can now enter a new recipe.");
+        return false;
+    }
+
+
+    public void DisplayRecipe()
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("\nIngredients:");
+        Console.ResetColor();
+
+        for (int i = 0; i < Ingredients.Count; i++)
+        {
+            Ingredient ingredient = Ingredients[i];
+            Console.WriteLine($"  {i + 1}. {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
         }
 
-        // This method is to display the ingredients and steps of the recipe
-        public void Disp()
-        {
-            Console.WriteLine("Ingredients:");
-            foreach (var ingredient in Ingredients)
-            {
-                Console.WriteLine($"{ingredient.Quantity} {ingredient.Unit} {ingredient.Name}");
-            }
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("\nSteps:");
+        Console.ResetColor();
 
-            Console.WriteLine("\nSteps:");
-            for (int i = 0; i < Steps.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Steps[i]}");
-            }
+        for (int i = 0; i < Steps.Count; i++)
+        {
+            Console.WriteLine($"  {i + 1}. {Steps[i]}");
         }
+    }
 
-        // Scale the quantities of ingredients by a given factor
-        public void Scale(double factor)
+    public void StoreOriginalQuantities()
+    {
+        for (int i = 0; i < Ingredients.Count; i++)
         {
-            for (int i = 0; i < Ingredients.Length; i++)
-            {
-                Ingredients[i].Quantity *= factor;
-            }
-        }
-
-        // I created this method to reset the quantities of ingredients to their original values
-        public void ResetQuantities()
-        {
-            for (int i = 0; i < Ingredients.Length; i++)
-            {
-                Ingredients[i].Quantity = FirstQuant[i];
-                Ingredients[i].Unit = FirstUnits[i];
-            }
-        }
-
-         // I created this method to clear all ingredients and steps from the recipe
-         public void Clear()
-        {
-            Array.Clear(Ingredients, 0, Ingredients.Length);
-            Array.Clear(Steps, 0, Steps.Length);
-        }
-        
-        // I created this method as a backup of the original quantities of ingredients to the OriginalQuantities dictionary
-
-        public void ReservedQuantities()
-        {
-            for (int i = 0; i < Ingredients.Length; i++)
-            {
-                FirstQuant[i] = Ingredients[i].Quantity;
-                FirstUnits[i] = Ingredients[i].Unit;
-            }
+            OriginalQuantities.Add(Ingredients[i].Quantity);
+            OriginalUnits.Add(Ingredients[i].Unit);
         }
     }
 }
