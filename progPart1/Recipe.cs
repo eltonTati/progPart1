@@ -25,18 +25,23 @@ internal class Recipe
     {
         for (int i = 0; i < ingredientCount; i++)
         {
-            Console.WriteLine("Enter ingredient name:");
+            Console.WriteLine($"Enter ingredient {i + 1} details:");
+            Console.Write("Name: ");
             string name = Console.ReadLine();
 
-            double quantity = GetPositiveDouble("Enter quantity:");
+            double quantity = GetPositiveDouble("Quantity:");
 
-            Console.WriteLine("Enter unit of measurement:");
+            Console.Write("Unit: ");
             string unit = Console.ReadLine();
 
-            Ingredients.Add(new Ingredient { Name = name, Quantity = quantity, Unit = unit });
+            double calories = GetPositiveDouble("Calories:");
+
+            Console.Write("Food Group: ");
+            string foodGroup = Console.ReadLine();
+
+            Ingredients.Add(new Ingredient { Name = name, Quantity = quantity, Unit = unit, Calories = calories, FoodGroup = foodGroup });
         }
     }
-
     public double GetPositiveDouble(string prompt)
     {
         double value;
@@ -133,7 +138,7 @@ internal class Recipe
         for (int i = 0; i < Ingredients.Count; i++)
         {
             Ingredient ingredient = Ingredients[i];
-            Console.WriteLine($"  {i + 1}. {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
+            Console.WriteLine($"  {i + 1}. {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}, Calories: {ingredient.Calories}, Food Group: {ingredient.FoodGroup}");
         }
 
         Console.ForegroundColor = ConsoleColor.Green;
@@ -147,7 +152,7 @@ internal class Recipe
     }
 
 
-public void StoreOriginalQuantities()
+    public void StoreOriginalQuantities()
     {
         for (int i = 0; i < Ingredients.Count; i++)
         {
