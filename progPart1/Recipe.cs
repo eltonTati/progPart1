@@ -123,6 +123,10 @@ internal class Recipe
     public void DisplayRecipe()
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"\nRecipe Name: {Name}");
+        Console.ResetColor();
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("\nIngredients:");
         Console.ResetColor();
 
@@ -142,7 +146,8 @@ internal class Recipe
         }
     }
 
-    public void StoreOriginalQuantities()
+
+public void StoreOriginalQuantities()
     {
         for (int i = 0; i < Ingredients.Count; i++)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace progPart1
 {
@@ -55,15 +56,39 @@ namespace progPart1
                     Console.ResetColor();
                 }
             }
-
-            // Display all recipes entered by the user
-            Console.WriteLine("\nRecipes entered:");
-            foreach (var recipe in recipes)
+            // Display all recipes entered by the user in alphabetical order by name
+            Console.WriteLine("\nRecipes entered (sorted by name):");
+            int recipeNumber = 1;
+            foreach (var recipe in recipes.OrderBy(r => r.Name))
             {
-                recipe.DisplayRecipe();
+                Console.WriteLine($"{recipeNumber}. {recipe.Name}");
+                recipeNumber++;
+            }
+
+            while (true)
+            {
+                if (recipes.Count > 0)
+                {
+                    // Ask the user to choose a recipe to display
+                    Console.WriteLine("\nEnter the number of the recipe you want to display (0 to exit):");
+                    int selectedRecipeNumber = GetSelectedRecipeNumber(recipes.Count);
+
+                    if (selectedRecipeNumber == 0)
+                    {
+                        // Exit the loop if the user chooses to exit
+                        break;
+                    }
+
+                    // Display the selected recipe
+                    recipes[selectedRecipeNumber - 1].DisplayRecipe();
+                }
+                else
+                {
+                    Console.WriteLine("\nNo recipes entered.");
+                    break;
+                }
             }
         }
-
         static string GetRecipeName()
         {
             Console.WriteLine("Please enter the recipe name:");
@@ -86,5 +111,22 @@ namespace progPart1
             }
             return value;
         }
+
+        static int GetSelectedRecipeNumber(int maxNumber)
+        {
+            int value;
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out value) && value >= 0 && value <= maxNumber)
+                {
+                    break;
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Invalid input. Please enter a number between 0 and {maxNumber}.");
+                Console.ResetColor();
+            }
+            return value;
+        }
     }
 }
+   
